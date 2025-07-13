@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Camera, CameraOff, AlertTriangle, CheckCircle } from 'lucide-react';
-import { stopAllCameraStreams, waitForCameraCleanup, safeCameraInit } from '../utils/cameraUtils';
+import { safeCameraInit } from '../utils/cameraUtils';
 
 const CameraTest = ({ isActiveSession = false }) => {
   const [cameraStatus, setCameraStatus] = useState('idle');

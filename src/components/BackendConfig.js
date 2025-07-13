@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { Settings, Check, X } from 'lucide-react';
-import { healthAPI, authAPI, updateApiBaseUrl } from '../services/api';
+import { authAPI, updateApiBaseUrl } from '../services/api';
 
 const BackendConfig = ({ onConfigChange }) => {
   const [backendUrl, setBackendUrl] = useState(localStorage.getItem('backendApiUrl') || '');
@@ -47,39 +47,6 @@ const BackendConfig = ({ onConfigChange }) => {
     } finally {
       setIsTesting(false);
     }
-  };
-
-  const saveBackendUrl = () => {
-    if (!backendUrl.trim()) {
-      toast.error('Please enter a backend URL');
-      return;
-    }
-
-    // Ensure the URL ends with /api
-    let url = backendUrl.trim();
-    if (!url.endsWith('/api')) {
-      url = url.endsWith('/') ? url + 'api' : url + '/api';
-    }
-
-    localStorage.setItem('backendApiUrl', url);
-    setBackendUrl(url);
-    
-    if (onConfigChange) {
-      onConfigChange(url);
-    }
-    
-    toast.success('Backend URL saved! Testing connection...');
-    testConnection();
-  };
-
-  const clearBackendUrl = () => {
-    localStorage.removeItem('backendApiUrl');
-    setBackendUrl('');
-    setIsConnected(false);
-    if (onConfigChange) {
-      onConfigChange('');
-    }
-    toast.info('Backend URL cleared');
   };
 
   const resetToDefault = () => {

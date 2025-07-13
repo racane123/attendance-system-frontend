@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Camera, AlertTriangle, CheckCircle, Info, ExternalLink } from 'lucide-react';
+import { AlertTriangle, CheckCircle, Info, ExternalLink } from 'lucide-react';
 
 const CameraTroubleshoot = () => {
   const [showGuide, setShowGuide] = useState(false);

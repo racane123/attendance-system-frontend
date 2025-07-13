@@ -45,7 +45,7 @@ const EmailHistory = () => {
 
   useEffect(() => {
     fetchEmailHistory();
-  }, [currentPage, filters]);
+  }, [currentPage, filters, fetchEmailHistory]);
 
   const handleFilterChange = (key, value) => {
     setFilters(prev => ({ ...prev, [key]: value }));

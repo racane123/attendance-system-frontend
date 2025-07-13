@@ -80,13 +80,18 @@ module.exports = {
             browsers: ['> 1%', 'last 2 versions', 'not ie <= 11']
           },
           useBuiltIns: 'entry',
-          corejs: { version: 3, proposals: true }
+          corejs: { version: 3, proposals: true },
+          loose: true // Set loose mode to true for consistency
         }
       ]
     ],
     plugins: [
       // Remove unused imports
-      ['babel-plugin-transform-remove-console', { exclude: ['error', 'warn'] }]
+      ['babel-plugin-transform-remove-console', { exclude: ['error', 'warn'] }],
+      // Add missing plugins with consistent loose mode
+      ['@babel/plugin-transform-private-methods', { loose: true }],
+      ['@babel/plugin-transform-private-property-in-object', { loose: true }],
+      ['@babel/plugin-transform-class-properties', { loose: true }]
     ]
   }
 }; 

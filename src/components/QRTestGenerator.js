@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import QRCode from 'qrcode';
 import { QrCode, Download, Copy, CheckCircle } from 'lucide-react';
 
@@ -7,7 +7,7 @@ const QRTestGenerator = () => {
   const [qrImage, setQrImage] = useState('');
   const [copied, setCopied] = useState(false);
 
-  const generateQR = async () => {
+  const generateQR = useCallback(async () => {
     try {
       const qrImageData = await QRCode.toDataURL(qrData, {
         width: 300,
@@ -21,7 +21,7 @@ const QRTestGenerator = () => {
     } catch (error) {
       console.error('Error generating QR code:', error);
     }
-  };
+  }, [qrData]);
 
   const copyToClipboard = async () => {
     try {
@@ -43,7 +43,7 @@ const QRTestGenerator = () => {
   };
 
   // Generate QR on component mount
-  React.useEffect(() => {
+  useEffect(() => {
     generateQR();
   }, [qrData, generateQR]);
 

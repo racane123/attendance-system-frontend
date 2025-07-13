@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { toast } from 'react-toastify';
 import { useAuth } from '../contexts/AuthContext';
 import { scannerAPI, subjectsAPI } from '../services/api';
@@ -18,12 +18,6 @@ const Reports = () => {
     loadSubjects();
   }, []);
 
-  useEffect(() => {
-    if (selectedSubject && startDate && endDate) {
-      loadAttendanceSummary();
-    }
-  }, [selectedSubject, startDate, endDate]);
-
   const loadSubjects = async () => {
     try {
       const response = await subjectsAPI.getAll();
@@ -38,7 +32,7 @@ const Reports = () => {
     }
   };
 
-  const loadAttendanceSummary = async () => {
+  const loadAttendanceSummary = useCallback(async () => {
     try {
       const response = await scannerAPI.getAttendanceSummary(selectedSubject, startDate, endDate);
       setAttendanceSummary(response.data.data);
@@ -46,7 +40,11 @@ const Reports = () => {
       console.error('Error loading attendance summary:', error);
       setAttendanceSummary([]);
     }
-  };
+  }, [selectedSubject, startDate, endDate]);
+
+  useEffect(() => {
+    loadAttendanceSummary();
+  }, [loadAttendanceSummary]);
 
   const calculateAttendanceRate = (present, total) => {
     if (total === 0) return 0;

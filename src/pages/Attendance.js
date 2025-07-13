@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { toast } from 'react-toastify';
 import { Calendar, Search, Download, Trash2 } from 'lucide-react';
 import { scannerAPI, subjectsAPI } from '../services/api';
@@ -15,12 +15,6 @@ const Attendance = () => {
     loadSubjects();
   }, []);
 
-  useEffect(() => {
-    if (selectedSubject) {
-      loadAttendanceRecords();
-    }
-  }, [selectedSubject, selectedDate]);
-
   const loadSubjects = async () => {
     try {
       const response = await subjectsAPI.getAll();
@@ -35,7 +29,7 @@ const Attendance = () => {
     }
   };
 
-  const loadAttendanceRecords = async () => {
+  const loadAttendanceRecords = useCallback(async () => {
     try {
       const response = await scannerAPI.getAttendance(selectedSubject, selectedDate);
       setAttendanceRecords(response.data.data);
@@ -43,7 +37,11 @@ const Attendance = () => {
       console.error('Error loading attendance records:', error);
       setAttendanceRecords([]);
     }
-  };
+  }, [selectedSubject, selectedDate]);
+
+  useEffect(() => {
+    loadAttendanceRecords();
+  }, [loadAttendanceRecords]);
 
   const handleStatusUpdate = async (recordId, newStatus) => {
     try {

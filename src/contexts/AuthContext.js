@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useCallback, useContext } from 'react';
 import { toast } from 'react-toastify';
 import { authAPI } from '../services/api';
 
@@ -16,7 +16,6 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [loading, setLoading] = useState(true);
-  const [justLoggedIn, setJustLoggedIn] = useState(false);
   const [loadAttempts, setLoadAttempts] = useState(0);
 
   // Function to update token in both state and localStorage
@@ -31,24 +30,13 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Function to clear auth data
-  const clearAuth = () => {
+  const clearAuth = useCallback(() => {
+    setToken(null);
     setUser(null);
-    updateToken(null);
-  };
+    localStorage.removeItem('token');
+  }, []);
 
-  useEffect(() => {
-    if (token && !justLoggedIn) {
-      loadUser();
-    } else if (justLoggedIn) {
-      // If we just logged in, don't call loadUser again
-      setJustLoggedIn(false);
-      setLoading(false);
-    } else {
-      setLoading(false);
-    }
-  }, [token, justLoggedIn, loadUser]);
-
-  const loadUser = async () => {
+  const loadUser = useCallback(async () => {
     try {
       console.log('Loading user profile... (attempt', loadAttempts + 1, ')');
       const response = await authAPI.getProfile();
@@ -98,7 +86,11 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [clearAuth, loadAttempts]);
+
+  useEffect(() => {
+    loadUser();
+  }, [loadUser]);
 
   const login = async (username, password) => {
     try {
@@ -116,7 +108,6 @@ export const AuthProvider = ({ children }) => {
       
       setUser(userData);
       updateToken(authToken);
-      setJustLoggedIn(true);
       setLoadAttempts(0); // Reset attempts on successful login
       
       console.log('User and token set in state');

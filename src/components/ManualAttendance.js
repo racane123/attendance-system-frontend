@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { toast } from 'react-toastify';
 import { 
   Users, 
@@ -20,17 +20,7 @@ const ManualAttendance = ({ subjectId, subjectName, onAttendanceUpdate }) => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [updating, setUpdating] = useState({});
 
-  useEffect(() => {
-    console.log('ManualAttendance useEffect triggered:', { subjectId, selectedDate });
-    if (subjectId && selectedDate) {
-      console.log('Loading students for subject:', subjectId, 'date:', selectedDate);
-      loadStudents();
-    } else {
-      console.log('Missing required props:', { subjectId, selectedDate });
-    }
-  }, [subjectId, selectedDate, loadStudents]);
-
-  const loadStudents = async () => {
+  const loadStudents = useCallback(async () => {
     try {
       setLoading(true);
       const response = await scannerAPI.getStudentsForAttendance(subjectId, selectedDate);
@@ -43,7 +33,17 @@ const ManualAttendance = ({ subjectId, subjectName, onAttendanceUpdate }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [subjectId, selectedDate]);
+
+  useEffect(() => {
+    console.log('ManualAttendance useEffect triggered:', { subjectId, selectedDate });
+    if (subjectId && selectedDate) {
+      console.log('Loading students for subject:', subjectId, 'date:', selectedDate);
+      loadStudents();
+    } else {
+      console.log('Missing required props:', { subjectId, selectedDate });
+    }
+  }, [subjectId, selectedDate, loadStudents]);
 
   const handleStatusChange = async (studentId, newStatus) => {
     try {

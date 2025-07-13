@@ -93,16 +93,6 @@ const Dashboard = () => {
     }
   };
 
-  const handleStartSession = async (subjectId) => {
-    try {
-      await scannerAPI.startSession(subjectId);
-      toast.success('Scanning session started successfully!');
-      loadDashboardData(); // Refresh data
-    } catch (error) {
-      toast.error(error.response?.data?.error || 'Failed to start session');
-    }
-  };
-
   const handleEndSession = async (sessionId) => {
     try {
       await scannerAPI.endSession(sessionId);

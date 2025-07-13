@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { toast } from 'react-toastify';
 import EmailHistory from '../components/EmailHistory';
 import EmailStats from '../components/EmailStats';
 import SendEmailForm from '../components/SendEmailForm';
@@ -8,9 +7,8 @@ import EmailPreferences from '../components/EmailPreferences';
 import EmailDebug from '../components/EmailDebug';
 
 const EmailManagement = () => {
-  const { user, token } = useAuth();
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('history');
-  const [loading, setLoading] = useState(false);
   const [showDebug, setShowDebug] = useState(false);
 
   const tabs = [

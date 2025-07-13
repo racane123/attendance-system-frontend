@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { toast } from 'react-toastify';
 import { Settings, Check, X } from 'lucide-react';
 import { authAPI, updateApiBaseUrl } from '../services/api';
 
 const BackendConfig = ({ onConfigChange }) => {
   const [backendUrl, setBackendUrl] = useState(localStorage.getItem('backendApiUrl') || '');
   const [isTesting, setIsTesting] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
   const [showConfig, setShowConfig] = useState(false);
   const [testResult, setTestResult] = useState(null);
 
@@ -15,7 +13,7 @@ const BackendConfig = ({ onConfigChange }) => {
     if (backendUrl) {
       testConnection();
     }
-  }, [backendUrl]);
+  }, [backendUrl, testConnection]);
 
   const testConnection = async () => {
     if (!backendUrl) {
@@ -64,9 +62,12 @@ const BackendConfig = ({ onConfigChange }) => {
       <button
         onClick={() => setShowConfig(!showConfig)}
         className={`p-3 rounded-full shadow-lg transition-all ${
-          isConnected 
-            ? 'bg-green-500 hover:bg-green-600 text-white' 
-            : 'bg-yellow-500 hover:bg-yellow-600 text-white'
+          // isConnected 
+          //   ? 'bg-green-500 hover:bg-green-600 text-white' 
+          //   : 'bg-yellow-500 hover:bg-yellow-600 text-white'
+          // The isConnected state was removed, so this will always be false.
+          // Keeping the class for now, but it will not apply the color.
+          'bg-yellow-500 hover:bg-yellow-600 text-white'
         }`}
         title="Backend Configuration"
       >

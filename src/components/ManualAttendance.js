@@ -28,7 +28,7 @@ const ManualAttendance = ({ subjectId, subjectName, onAttendanceUpdate }) => {
     } else {
       console.log('Missing required props:', { subjectId, selectedDate });
     }
-  }, [subjectId, selectedDate]);
+  }, [subjectId, selectedDate, loadStudents]);
 
   const loadStudents = async () => {
     try {

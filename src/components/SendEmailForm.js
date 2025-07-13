@@ -50,7 +50,6 @@ const SendEmailForm = () => {
 
     try {
       let apiCall;
-      let payload = {};
 
       switch (formData.emailType) {
         case 'notification':

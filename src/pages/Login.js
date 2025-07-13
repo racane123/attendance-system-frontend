@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { LogIn, Eye, EyeOff, Loader, Bug } from 'lucide-react';
-import ApiConfig from '../components/ApiConfig';
+import { LogIn, Eye, EyeOff, Loader } from 'lucide-react';
 import { authAPI } from '../services/api';
 
 const Login = () => {
@@ -12,7 +11,6 @@ const Login = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [debugInfo, setDebugInfo] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -26,7 +24,6 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setDebugInfo('');
 
     try {
       console.log('Attempting login with:', formData);
@@ -36,49 +33,14 @@ const Login = () => {
       if (result.success) {
         navigate('/');
       } else {
-        setDebugInfo(`Login failed: ${result.error}`);
+        // setDebugInfo(`Login failed: ${result.error}`); // Removed as per edit hint
       }
     } catch (error) {
       console.error('Login error:', error);
-      setDebugInfo(`Login error: ${error.message}`);
+      // setDebugInfo(`Login error: ${error.message}`); // Removed as per edit hint
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleDebugAuth = async () => {
-    setDebugInfo('Testing authentication...');
-    try {
-      console.log('=== DEBUG AUTH START ===');
-      
-      // Test login
-      console.log('Testing login...');
-      const loginResponse = await authAPI.login('admin', 'admin123');
-      console.log('Login response:', loginResponse);
-      
-      // Check if token is stored
-      const storedToken = localStorage.getItem('token');
-      console.log('Stored token:', storedToken ? 'Present' : 'Missing');
-      
-      // Test profile
-      console.log('Testing profile...');
-      const profileResponse = await authAPI.getProfile();
-      console.log('Profile response:', profileResponse);
-      
-      setDebugInfo('Debug completed - check console for details');
-      console.log('=== DEBUG AUTH END ===');
-    } catch (error) {
-      console.error('Auth debug error:', error);
-      setDebugInfo(`Debug error: ${error.message}`);
-    }
-  };
-
-  const handleTestToken = () => {
-    const token = localStorage.getItem('token');
-    const user = JSON.parse(localStorage.getItem('user') || 'null');
-    console.log('Current token:', token);
-    console.log('Current user in localStorage:', user);
-    setDebugInfo(`Token: ${token ? 'Present' : 'Missing'}, User: ${user ? 'Present' : 'Missing'}`);
   };
 
   return (

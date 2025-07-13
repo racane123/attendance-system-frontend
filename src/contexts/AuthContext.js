@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
     } else {
       setLoading(false);
     }
-  }, [token, justLoggedIn]);
+  }, [token, justLoggedIn, loadUser]);
 
   const loadUser = async () => {
     try {

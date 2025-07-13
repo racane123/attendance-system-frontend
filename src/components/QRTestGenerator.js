@@ -45,7 +45,7 @@ const QRTestGenerator = () => {
   // Generate QR on component mount
   React.useEffect(() => {
     generateQR();
-  }, [qrData]);
+  }, [qrData, generateQR]);
 
   return (
     <div className="card p-6">

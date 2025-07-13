@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { Users, Plus, Trash2, Search, Eye, Download, Edit } from 'lucide-react';
+import { Plus, Trash2, Search, Eye, Download, Edit } from 'lucide-react';
 import { studentsAPI } from '../services/api';
 import QRCode from 'qrcode';
 

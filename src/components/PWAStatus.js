@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Wifi, WifiOff, Download, Smartphone, Database, Cache } from 'lucide-react';
+import { Wifi, WifiOff, Download, Smartphone, Database } from 'lucide-react';
 import offlineStorage from '../utils/offlineStorage';
 
 const PWAStatus = () => {

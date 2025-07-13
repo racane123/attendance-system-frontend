@@ -89,11 +89,6 @@ const PWAInstall = () => {
     localStorage.setItem('pwa-install-dismissed', Date.now().toString());
   };
 
-  const handleShowAgain = () => {
-    localStorage.removeItem('pwa-install-dismissed');
-    setShowInstallPrompt(true);
-  };
-
   // Check if we should show the prompt (not dismissed recently)
   useEffect(() => {
     const dismissedTime = localStorage.getItem('pwa-install-dismissed');

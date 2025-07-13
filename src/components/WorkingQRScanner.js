@@ -110,7 +110,7 @@ const WorkingQRScanner = ({ onScan, onError, isActive = false }) => {
         }
       }
     };
-  }, [isActive, scanner]);
+  }, [isActive, scanner, handleScanSuccess, handleScannerError]);
 
   // Cleanup on unmount
   useEffect(() => {

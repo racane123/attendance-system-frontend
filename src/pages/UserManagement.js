@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { authAPI } from '../services/api';
 import { 
-  UserPlus, 
   Users, 
   Edit, 
   Trash2, 
@@ -10,7 +9,6 @@ import {
   EyeOff, 
   Loader, 
   Search,
-  Filter,
   Plus,
   X
 } from 'lucide-react';

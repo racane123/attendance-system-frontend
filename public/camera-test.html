@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        video {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        .error {
+            color: #dc2626;
+            background: #fee2e2;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+        .success {
+            color: #059669;
+            background: #d1fae5;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Camera Access Test</h1>
+        <p>This page will help you test camera access and diagnose issues.</p>
+        
+        <div id="status"></div>
+        <div id="error"></div>
+        
+        <button onclick="testCamera()">Test Camera Access</button>
+        <button onclick="listDevices()">List Camera Devices</button>
+        <button onclick="startCamera()">Start Camera</button>
+        <button onclick="stopCamera()">Stop Camera</button>
+        
+        <video id="video" autoplay playsinline style="display: none;"></video>
+        
+        <div id="devices"></div>
+        
+        <h3>Troubleshooting Steps:</h3>
+        <ol>
+            <li>Click "Test Camera Access" first</li>
+            <li>If it fails, check browser permissions</li>
+            <li>Look for camera icon in address bar</li>
+            <li>Try refreshing the page</li>
+            <li>Check if other apps are using camera</li>
+        </ol>
+    </div>
+
+    <script>
+        let stream = null;
+        
+        function updateStatus(message, isError = false) {
+            const statusDiv = document.getElementById('status');
+            const errorDiv = document.getElementById('error');
+            
+            if (isError) {
+                errorDiv.innerHTML = `<div class="error">${message}</div>`;
+                statusDiv.innerHTML = '';
+            } else {
+                statusDiv.innerHTML = `<div class="success">${message}</div>`;
+                errorDiv.innerHTML = '';
+            }
+        }
+        
+        async function testCamera() {
+            try {
+                updateStatus('Testing camera access...');
+                
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    updateStatus('Camera API not supported in this browser', true);
+                    return;
+                }
+                
+                const testStream = await navigator.mediaDevices.getUserMedia({ 
+                    video: true,
+                    audio: false
+                });
+                
+                testStream.getTracks().forEach(track => track.stop());
+                updateStatus('Camera access successful! ✅');
+                
+            } catch (error) {
+                updateStatus(`Camera access failed: ${error.message}`, true);
+            }
+        }
+        
+        async function listDevices() {
+            try {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                
+                const devicesDiv = document.getElementById('devices');
+                devicesDiv.innerHTML = '<h3>Available Cameras:</h3>';
+                
+                if (videoDevices.length === 0) {
+                    devicesDiv.innerHTML += '<p>No camera devices found</p>';
+                } else {
+                    videoDevices.forEach((device, index) => {
+                        devicesDiv.innerHTML += `<p>${index + 1}. ${device.label || 'Camera ' + (index + 1)}</p>`;
+                    });
+                }
+                
+            } catch (error) {
+                updateStatus(`Error listing devices: ${error.message}`, true);
+            }
+        }
+        
+        async function startCamera() {
+            try {
+                const video = document.getElementById('video');
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: {
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    },
+                    audio: false
+                });
+                
+                video.srcObject = stream;
+                video.style.display = 'block';
+                updateStatus('Camera started successfully!');
+                
+            } catch (error) {
+                updateStatus(`Failed to start camera: ${error.message}`, true);
+            }
+        }
+        
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+                
+                const video = document.getElementById('video');
+                video.srcObject = null;
+                video.style.display = 'none';
+                
+                updateStatus('Camera stopped');
+            }
+        }
+        
+        // Auto-test on page load
+        window.onload = function() {
+            updateStatus('Page loaded. Click "Test Camera Access" to begin.');
+        };
+    </script>
+</body>
+</html> 

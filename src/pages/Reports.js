@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { 
-  BarChart3, 
-  TrendingUp, 
-  Calendar,
-  Download,
-  Filter,
-  Mail
-} from 'lucide-react';
-import { scannerAPI, subjectsAPI } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
+import { scannerAPI, subjectsAPI } from '../services/api';
 import EmailNotification from '../components/EmailNotification';
+import { Download, Calendar, TrendingUp, BarChart3 } from 'lucide-react';
 
 const Reports = () => {
   const { user } = useAuth();

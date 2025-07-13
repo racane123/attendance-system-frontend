@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Camera, CameraOff, AlertTriangle, CheckCircle } from 'lucide-react';
 import { stopAllCameraStreams, waitForCameraCleanup, safeCameraInit } from '../utils/cameraUtils';
 
@@ -16,25 +16,21 @@ const CameraTest = ({ isActiveSession = false }) => {
     try {
       setCameraStatus('checking');
       setError('');
-
       // Check if getUserMedia is supported
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         setCameraStatus('not-supported');
         setError('Camera API not supported in this browser');
         return;
       }
-
       // Check available devices
       const devices = await navigator.mediaDevices.enumerateDevices();
       const videoDevices = devices.filter(device => device.kind === 'videoinput');
       setDevices(videoDevices);
-
       if (videoDevices.length === 0) {
         setCameraStatus('no-devices');
         setError('No camera devices found');
         return;
       }
-
       // Use safe camera initialization
       const stream = await safeCameraInit({
         video: { 
@@ -42,10 +38,8 @@ const CameraTest = ({ isActiveSession = false }) => {
           height: { ideal: 720 }
         }
       });
-
       // If successful, stop the stream
       stream.getTracks().forEach(track => track.stop());
-      
       setCameraStatus('success');
       setError('');
     } catch (err) {

@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import {
   Plus,
-  Edit,
   Trash2,
   GraduationCap,
   User,
   BookOpen,
   Search,
-  Filter,
   Check,
   X,
-  Users,
-  Calendar,
-  BarChart3
+  Users
 } from 'lucide-react';
 import enrollmentAPI from '../services/enrollmentAPI.js';
 import studentAPI from '../services/studentAPI.js';

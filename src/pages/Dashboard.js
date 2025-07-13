@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { 
-  Users, 
-  BookOpen, 
-  QrCode, 
-  Calendar, 
-  TrendingUp, 
-  Clock,
-  Play,
-  StopCircle,
-  Mail
-} from 'lucide-react';
+import { Users, BookOpen, QrCode, Calendar, Mail, StopCircle } from 'lucide-react';
 import { scannerAPI, studentsAPI, subjectsAPI } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 import TokenDebug from '../components/TokenDebug';

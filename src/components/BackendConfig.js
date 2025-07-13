@@ -15,36 +15,30 @@ const BackendConfig = ({ onConfigChange }) => {
     if (backendUrl) {
       testConnection();
     }
-  }, []);
+  }, [backendUrl]);
 
   const testConnection = async () => {
     if (!backendUrl) {
       setTestResult({ success: false, message: 'Please enter a backend URL' });
       return;
     }
-
     setIsTesting(true);
     setTestResult(null);
-
     try {
       // Temporarily set the backend URL
       localStorage.setItem('backendApiUrl', backendUrl);
-      
       // Update the API base URL
       updateApiBaseUrl();
-      
       // Test the connection
       const response = await authAPI.getProfile();
       setTestResult({ 
         success: true, 
         message: 'Connection successful! Backend URL configured.' 
       });
-      
       // Reload the page to apply the new configuration
       setTimeout(() => {
         window.location.reload();
       }, 2000);
-      
     } catch (error) {
       setTestResult({ 
         success: false, 

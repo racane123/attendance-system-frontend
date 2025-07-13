@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { 
-  Calendar, 
-  Users, 
-  BookOpen, 
-  Search,
-  Filter,
-  Download,
-  Edit,
-  Trash2
-} from 'lucide-react';
+import { Calendar, Search, Download, Trash2 } from 'lucide-react';
 import { scannerAPI, subjectsAPI } from '../services/api';
 
 const Attendance = () => {

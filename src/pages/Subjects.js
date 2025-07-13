@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { 
-  BookOpen, 
-  Plus, 
-  Edit, 
-  Trash2, 
-  Search
-} from 'lucide-react';
 import { subjectsAPI } from '../services/api';
 
 const Subjects = () => {
@@ -31,11 +24,9 @@ const Subjects = () => {
       setLoading(true);
       const response = await subjectsAPI.getAll();
       console.log('Subjects response:', response);
-      
       // Handle both response structures
       const subjectsData = response.data?.data || response.data || [];
       console.log('Subjects data extracted:', subjectsData);
-      
       if (Array.isArray(subjectsData)) {
         setSubjects(subjectsData);
       } else {
@@ -134,7 +125,6 @@ const Subjects = () => {
           }}
           className="btn-primary"
         >
-          <Plus className="h-4 w-4 mr-2" />
           Add Subject
         </button>
       </div>
@@ -142,7 +132,6 @@ const Subjects = () => {
       {/* Search */}
       <div className="card p-4">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
           <input
             type="text"
             placeholder="Search subjects..."
@@ -168,14 +157,14 @@ const Subjects = () => {
                   className="text-primary-600 hover:text-primary-900"
                   title="Edit"
                 >
-                  <Edit className="h-4 w-4" />
+                  Edit
                 </button>
                 <button
                   onClick={() => handleDelete(subject.id)}
                   className="text-danger-600 hover:text-danger-900"
                   title="Delete"
                 >
-                  <Trash2 className="h-4 w-4" />
+                  Delete
                 </button>
               </div>
             </div>

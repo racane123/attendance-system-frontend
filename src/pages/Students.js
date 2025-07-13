@@ -1,16 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { 
-  Users, 
-  Plus, 
-  Edit, 
-  Trash2, 
-  QrCode, 
-  Search,
-  Download,
-  Eye,
-  Filter
-} from 'lucide-react';
+import { Users, Plus, Trash2, Search, Eye, Download, Edit } from 'lucide-react';
 import { studentsAPI } from '../services/api';
 import QRCode from 'qrcode';
 
@@ -43,11 +33,9 @@ const Students = () => {
       setLoading(true);
       const response = await studentsAPI.getAll();
       console.log('Students response:', response);
-      
       // Handle both response structures
       const studentsData = response.data?.data || response.data || [];
       console.log('Students data extracted:', studentsData);
-      
       if (Array.isArray(studentsData)) {
         setStudents(studentsData);
       } else {
@@ -81,7 +69,7 @@ const Students = () => {
       }
     } catch (error) {
       console.error('Error loading sections:', error);
-      setSections(['GK3DA', 'GP4DA', 'GT3DA','GU3DA']); // Fallback sections
+      setSections(['GK3DA', 'GP4DA', 'GT3DA','GU3DA']);
     }
   };
 
@@ -218,7 +206,6 @@ const Students = () => {
             />
           </div>
           <div className="relative">
-            <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
             <select
               value={selectedSection}
               onChange={(e) => setSelectedSection(e.target.value)}

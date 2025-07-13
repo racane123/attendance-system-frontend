@@ -20,15 +20,11 @@ const ApiConfig = () => {
   const testConnection = async (url) => {
     setIsLoading(true);
     setError('');
-    
     try {
       // Temporarily set the API URL
-      const originalUrl = localStorage.getItem('backendApiUrl');
       localStorage.setItem('backendApiUrl', url);
-      
       // Test the connection
       const response = await healthAPI.check();
-      
       if (response.data.message === 'Server is running') {
         setIsConnected(true);
         setError('');
@@ -49,13 +45,11 @@ const ApiConfig = () => {
       setError('Please enter a backend URL');
       return;
     }
-
     // Ensure URL ends with /api
     let url = backendUrl.trim();
     if (!url.endsWith('/api')) {
       url = url.endsWith('/') ? url + 'api' : url + '/api';
     }
-
     localStorage.setItem('backendApiUrl', url);
     setBackendUrl(url);
     testConnection(url);

@@ -13,7 +13,6 @@ const EmailNotification = ({
   onCancel,
   showForm = false 
 }) => {
-  const { token } = useAuth();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     recipientEmail: recipientEmail || '',

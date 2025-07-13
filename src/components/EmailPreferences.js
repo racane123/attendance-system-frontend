@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { emailAPI } from '../services/api';
 
 const EmailPreferences = () => {
-  const { token, user } = useAuth();
+  const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [preferences, setPreferences] = useState({

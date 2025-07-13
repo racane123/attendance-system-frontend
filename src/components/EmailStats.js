@@ -4,7 +4,6 @@ import { toast } from 'react-toastify';
 import { emailAPI } from '../services/api';
 
 const EmailStats = () => {
-  const { token } = useAuth();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [days, setDays] = useState(30);
@@ -30,7 +29,7 @@ const EmailStats = () => {
 
   useEffect(() => {
     fetchEmailStats();
-  }, [days]);
+  }, [days, fetchEmailStats]);
 
   const getTotalEmails = () => {
     if (!stats?.totalByType) return 0;

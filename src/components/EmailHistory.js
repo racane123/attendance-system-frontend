@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { toast } from 'react-toastify';
 import { format } from 'date-fns';
@@ -16,7 +16,7 @@ const EmailHistory = () => {
     recipient_email: ''
   });
 
-  const fetchEmailHistory = async () => {
+  const fetchEmailHistory = useCallback(async () => {
     try {
       setLoading(true);
       console.log('🔍 Fetching email history...');
@@ -41,7 +41,7 @@ const EmailHistory = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage, filters, token]);
 
   useEffect(() => {
     fetchEmailHistory();

@@ -20,7 +20,7 @@ const Students = () => {
     middle_name: '',
     last_name: '',
     email: '',
-    section: 'A'
+    section: ''
   });
 
   useEffect(() => {
@@ -102,7 +102,7 @@ const Students = () => {
       middle_name: student.middle_name || '',
       last_name: student.last_name,
       email: student.email,
-      section: student.section || 'A'
+      section: student.section
     });
     setShowModal(true);
   };
@@ -147,7 +147,7 @@ const Students = () => {
       middle_name: '',
       last_name: '',
       email: '',
-      section: 'A'
+      section: ''
     });
   };
 

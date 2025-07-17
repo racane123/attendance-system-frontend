@@ -3,6 +3,12 @@ import { toast } from 'react-toastify';
 import { Plus, Trash2, Search, Eye, Download, Edit } from 'lucide-react';
 import { studentsAPI } from '../services/api';
 import QRCode from 'qrcode';
+import JSZip from 'jszip';
+
+// Utility to sanitize filenames
+function sanitizeFilename(name) {
+  return name.replace(/[^a-z0-9\-_.]/gi, '_');
+}
 
 const Students = () => {
   const [students, setStudents] = useState([]);
@@ -128,16 +134,43 @@ const Students = () => {
     }
   };
 
-  const downloadQR = async (qrCode, studentName) => {
+  const downloadQR = async (qrCode, student) => {
     try {
       const qrDataURL = await QRCode.toDataURL(qrCode);
+      const fullName = [student.first_name, student.middle_name, student.last_name].filter(Boolean).join(' ');
+      const safeName = sanitizeFilename(fullName);
       const link = document.createElement('a');
-      link.download = `qr-${studentName}.png`;
+      link.download = `qr-${safeName}.png`;
       link.href = qrDataURL;
       link.click();
     } catch (error) {
       toast.error('Failed to download QR code');
     }
+  };
+
+  const bulkDownloadQR = async () => {
+    const zip = new JSZip();
+    const studentsToDownload = filteredStudents.filter(s => !selectedSection || s.section === selectedSection);
+    for (const student of studentsToDownload) {
+      if (!student.qr_code) continue;
+      const fullName = [student.first_name, student.middle_name, student.last_name].filter(Boolean).join(' ');
+      const safeName = sanitizeFilename(fullName);
+      try {
+        const qrDataURL = await QRCode.toDataURL(student.qr_code);
+        // Convert dataURL to blob
+        const res = await fetch(qrDataURL);
+        const blob = await res.blob();
+        zip.file(`qr-${safeName}.png`, blob);
+      } catch (e) {
+        // Optionally handle error per student
+      }
+    }
+    const content = await zip.generateAsync({ type: 'blob' });
+    const sectionName = selectedSection ? `section-${sanitizeFilename(selectedSection)}` : 'all-sections';
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(content);
+    link.download = `qr-codes-${sectionName}.zip`;
+    link.click();
   };
 
   const resetForm = () => {
@@ -147,7 +180,7 @@ const Students = () => {
       middle_name: '',
       last_name: '',
       email: '',
-      section: ''
+      section: sections[0] || ''
     });
   };
 
@@ -182,7 +215,14 @@ const Students = () => {
         <button
           onClick={() => {
             setEditingStudent(null);
-            resetForm();
+            setFormData({
+              student_id: '',
+              first_name: '',
+              middle_name: '',
+              last_name: '',
+              email: '',
+              section: sections[0] || ''
+            });
             setShowModal(true);
           }}
           className="btn-primary"
@@ -218,6 +258,18 @@ const Students = () => {
             </select>
           </div>
         </div>
+      </div>
+
+      {/* Bulk Download Button */}
+      <div className="flex justify-end mb-2">
+        <button
+          onClick={bulkDownloadQR}
+          className="btn-secondary flex items-center"
+          disabled={filteredStudents.length === 0}
+        >
+          <Download className="h-4 w-4 mr-2" />
+          Bulk Download QR Codes {selectedSection && `(Section ${selectedSection})`}
+        </button>
       </div>
 
       {/* Students List */}
@@ -275,7 +327,7 @@ const Students = () => {
                         <Eye className="h-4 w-4" />
                       </button>
                       <button
-                        onClick={() => downloadQR(student.qr_code, `${student.first_name}-${student.last_name}`)}
+                        onClick={() => downloadQR(student.qr_code, student)}
                         className="text-success-600 hover:text-success-900"
                         title="Download QR Code"
                       >

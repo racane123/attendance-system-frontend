@@ -151,14 +151,14 @@ function App() {
             </Routes>
           </Suspense>
           
-          {/* Backend Configuration Component */}
-          <BackendConfig onConfigChange={handleBackendConfigChange} />
+          {/* Backend Configuration Component 
+          <BackendConfig onConfigChange={handleBackendConfigChange} />*/}
           
           {/* PWA Install Prompt */}
           <PWAInstall />
           
-          {/* PWA Status (for debugging) */}
-          <PWAStatus />
+          {/* PWA Status (for debugging)
+          <PWAStatus /> */}
         </div>
       </ErrorBoundary>
     </AuthProvider>

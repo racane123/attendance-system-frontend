@@ -52,20 +52,20 @@ const Dashboard = () => {
       const subjects = subjectsRes.status === 'fulfilled' ? (subjectsRes.value?.data?.data || subjectsRes.value?.data || []) : [];
       const activeSessions = activeSessionsRes.status === 'fulfilled' ? (activeSessionsRes.value?.data?.data || activeSessionsRes.value?.data || []) : [];
       const todayData = todayRes.status === 'fulfilled' ? (todayRes.value?.data?.data || todayRes.value?.data || []) : [];
-
+/***
       console.log('Extracted data:', {
         students: students,
         subjects: subjects,
         activeSessions: activeSessions,
         todayData: todayData
       });
-
+       
       console.log('Dashboard data loaded:', {
         students: students.length,
         subjects: subjects.length,
         activeSessions: activeSessions.length,
         todayData: todayData.length
-      });
+      });*/
 
       setStats({
         totalStudents: Array.isArray(students) ? students.length : 0,

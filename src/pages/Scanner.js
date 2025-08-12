@@ -209,7 +209,7 @@ const Scanner = () => {
                 <select
                   value={selectedSubject}
                   onChange={(e) => {
-                    console.log('Subject selected:', e.target.value);
+                    /***console.log('Subject selected:', e.target.value);*/
                     setSelectedSubject(e.target.value);
                   }}
                   className="input"

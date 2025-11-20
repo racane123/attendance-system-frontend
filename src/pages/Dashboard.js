@@ -288,10 +288,10 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Token Debug Panel (Development Only) */}
+      {/* Token Debug Panel (Development Only) 
       {process.env.NODE_ENV === 'development' && (
         <TokenDebug />
-      )}
+      )}*/}
     </div>
   );
 };

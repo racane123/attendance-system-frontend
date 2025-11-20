@@ -71,11 +71,11 @@ const Students = () => {
         setSections(sectionsData);
       } else {
         console.error('Invalid sections data:', sectionsData);
-        setSections(['GK3DA', 'GP4DA', 'GT3DA','GU3DA']); // Fallback sections
+        setSections(['GK3DA', 'GP3DA', 'GT3DA','GU3DA', 'GK3DB', 'GC3DA','GU3DB', 'GP1MA']); // Fallback sections
       }
     } catch (error) {
       console.error('Error loading sections:', error);
-      setSections(['GK3DA', 'GP4DA', 'GT3DA','GU3DA']);
+      setSections(['GK3DA', 'GP3DA', 'GT3DA','GU3DA', 'GK3DB', 'GC3DA','GU3DB','GP1MA']);
     }
   };
 
